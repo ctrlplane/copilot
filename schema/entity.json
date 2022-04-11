@@ -1,0 +1,55 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$id": "https://ctrlplane.io/entity.schema.json",
+    "title": "Entity Record",
+    "description": "A pilot entity record",
+    "type": "object",
+    "properties": {
+        "entity_id" : {
+            "description": "the unique entity ID",
+            "type": "string",
+            "format": "uuid"
+        },
+        "pilot_agent_id": {
+            "description": "the unique pilot agent ID",
+            "type": "string"
+        },
+        "modify_time": {
+            "description": "the timestamp when entity was last modified",
+            "type": "string",
+            "format": "date-time"
+        },
+        "authorized_kek_ids": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "uniqueItems": true
+        },
+        "revoked_kek_ids": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "uniqueItems": true
+        },
+        "authorized": {
+            "description": "whether the agent has been authorized or not",
+            "type": "boolean"
+        },
+        "authorization_method": {
+            "description": "the method through which the pilot agent was authorized",
+            "type": "string"
+        }
+    },
+    "required": [
+        "entity_id",
+        "pilot_agent_id",
+        "modify_time",
+        "authorized_kek_ids",
+        "revoked_kek_ids",
+        "authorized",
+        "authorization_method"
+    ]
+}
+

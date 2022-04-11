@@ -20,10 +20,13 @@
             "type": "string"
         },
         "kek_id": {
+            "description": "the list of key encryption keys requested",
             "type": "array",
             "items": {
                 "type": "string"
-            }
+            },
+            "minItems": 1,
+            "uniqueItems": true
         }
     },
     "required": [
