@@ -1,0 +1,38 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$id": "https://ctrlplane.io/keyrequest.schema.json",
+    "title": "Key Request",
+    "description": "A pilot key request to copilot",
+    "type": "object",
+    "properties": {
+        "request_id": {
+            "description": "the unique request ID for this rquest",
+            "type": "string",
+            "format": "uuid"
+        },
+        "request_time": {
+            "description": "the request timestamp",
+            "type": "string",
+            "format": "date-time"
+        },
+        "pilot_agent_id": {
+            "description": "the unique pilot agent ID",
+            "type": "string"
+        },
+        "kek_id": {
+            "description": "the list of key encryption keys requested",
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+        }
+    },
+    "required": [
+        "request_id",
+        "request_time",
+        "pilot_agent_id",
+        "kek_id"
+    ]
+}
