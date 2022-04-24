@@ -1,0 +1,4 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://copilot:ctrlplane@100.88.247.94:31181/copilot?authSource=admin
