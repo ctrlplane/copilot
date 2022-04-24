@@ -1,4 +1,4 @@
 spring:
   data:
     mongodb:
-      database: copilot
+      uri: mongodb://copilot:ctrlplane@100.88.247.94:31181/copilot?authSource=admin
