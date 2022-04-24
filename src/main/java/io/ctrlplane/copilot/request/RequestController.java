@@ -1,5 +1,7 @@
 package io.ctrlplane.copilot.request;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +14,13 @@ import java.nio.charset.StandardCharsets;
 @RestController
 public class RequestController {
 
+    /** The logger for this class. */
+    private static final Logger LOG =
+            LoggerFactory.getLogger(RequestController.class);
+
     /** A static encryption key. */
     private static final byte[] KEY =
-            "thisisasupersecretkey".getBytes(StandardCharsets.UTF_8);
+            "supersecretkey!!".getBytes(StandardCharsets.UTF_8);
 
     /** The repository for storing key request records. */
     private final RequestRepository requestRepository;
@@ -41,6 +47,7 @@ public class RequestController {
     @GetMapping(value = "/api/v1/key/{kekId}")
     public ResponseEntity<byte[]> getKey(
             @PathVariable String kekId) {
+        LOG.debug("Received request for kekID {}", kekId);
         this.requestRepository.save(new RequestRecord(kekId));
         return ResponseEntity.ok(KEY);
     }
