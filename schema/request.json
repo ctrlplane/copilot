@@ -5,11 +5,6 @@
     "description": "A pilot key request to copilot",
     "type": "object",
     "properties": {
-        "request_id": {
-            "description": "the unique request ID for this rquest",
-            "type": "string",
-            "format": "uuid"
-        },
         "request_time": {
             "description": "the request timestamp",
             "type": "string",
@@ -17,22 +12,27 @@
         },
         "pilot_agent_id": {
             "description": "the unique pilot agent ID",
-            "type": "string"
+            "type": "string",
+            "format": "uuid"
         },
         "kek_id": {
             "description": "the list of key encryption keys requested",
             "type": "array",
             "items": {
                 "type": "string"
-            },
+        },
             "minItems": 1,
-            "uniqueItems": true
+            "uniqueItems": true,
+        "kek_authorized": {
+            "description": "whether or not this kek request was authorized",
+            "type": "boolean"
+            }
         }
     },
     "required": [
-        "request_id",
         "request_time",
         "pilot_agent_id",
-        "kek_id"
+        "kek_id",
+        "kek_authorized"
     ]
 }

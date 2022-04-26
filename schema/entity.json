@@ -5,19 +5,15 @@
     "description": "A pilot entity record",
     "type": "object",
     "properties": {
-        "entity_id" : {
-            "description": "the unique entity ID",
-            "type": "string",
-            "format": "uuid"
-        },
-        "pilot_agent_id": {
-            "description": "the unique pilot agent ID",
-            "type": "string"
-        },
         "modify_time": {
             "description": "the timestamp when entity was last modified",
             "type": "string",
             "format": "date-time"
+        },        
+        "pilot_agent_id": {
+            "description": "the unique pilot agent ID",
+            "type": "string",
+            "format": "uuid"
         },
         "authorized_kek_ids": {
             "type": "array",
