@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ctrlplane-copilot
+  namespace: ctrlplane-dev
+  labels:
+    app: copilot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: copilot
+  template:
+    metadata:
+      labels:
+        app: copilot
+    spec:
+      containers:
+        - name: copilot
+          image: quay.io/ctrlplane/copilot:0.0.1-SNAPSHOT
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: copilot-svc
+  namespace: ctrlplane-dev
+  labels:
+    app: copilot
+    service: copilot
+spec:
+  selector:
+    app: copilot
+  ports:
+    - name: copilot-http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
