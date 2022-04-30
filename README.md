@@ -1,16 +1,19 @@
 # copilot
 Key broker service
+## Status
+![copilot CI](https://github.com/ctrlplane/copilot/actions/workflows/copilot-build.yaml/badge.svg)
 
-### Building from source
-```mvn clean compile jib:build```
-This builds the image and deploys it to the harbor repository.
-No local docker daemon is required for the build.
-
-
-### Running
-
+## Running
 To run with podman:
 
-```podman run -d -p 8080:8080 harbor.ctrlplane.net/ctrlplane/copilot:0.0.1-SNAPSHOT```
+```podman run -d -p 8080:8080 quay.io/ctrlplane/copilot:0.0.1-SNAPSHOT```
 
-This exposes port 8080 to pilot on localhost.
+This exposes port 8080 to `pilot` on localhost.
+
+## Building from source
+
+From the top level of the repository:
+
+```$ mvn -B package --file pom.xml```
+
+This will create an executable `.jar` file in the `target` directory.
