@@ -1,3 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: copilot-config
+  namespace: ctrlplane-dev
+  labels:
+    app: copilot
+data:
+  server.port: "8080"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -18,14 +27,26 @@ spec:
     spec:
       containers:
         - name: copilot
-          image: quay.io/ctrlplane/copilot:0.0.1-SNAPSHOT
+          image: quay.io/ctrlplane/copilot:latest
           ports:
             - containerPort: 8080
+          env:
+            - name: SPRING_DATA_MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: copilot-mongo-credentials
+                  key: spring.data.mongodb.uri
+                  optional: false
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: copilot-config
+                  key: server.port
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: copilot-svc
+  name: copilot-http
   namespace: ctrlplane-dev
   labels:
     app: copilot
