@@ -34,7 +34,7 @@ spec:
             - name: SPRING_DATA_MONGODB_URI
               valueFrom:
                 secretKeyRef:
-                  name: copilot-mongo-credentials
+                  name: copilot-mongo-credentials # kubectl create secret generic copilot-mongo-credentials --from-literal=spring.data.mongodb.uri=mongodb://admin:password@mongo-svc:27017/copilot?authSource=admin
                   key: spring.data.mongodb.uri
                   optional: false
             - name: SERVER_PORT
