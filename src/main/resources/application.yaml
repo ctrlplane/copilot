@@ -1,12 +1,39 @@
 logging:
   level:
-    io:
-      ctrlplane: DEBUG
-
+    org:
+      springframework:
+        web:
+          reactive: DEBUG
+          client: DEBUG
 server:
   port: 8080
 
 spring:
   data:
     mongodb:
-      uri: mongodb://copilot:ctrlplane@100.88.247.94:31181/copilot?authSource=admin
+      uri: mongodb://copilot:ctrlplane@100.116.239.28:31181/copilot?authSource=admin
+  cloud:
+    vault:
+      config.lifecycle:
+        enabled: true
+        min-renewal: 10m # sets the duration that is at least required before renewing a lease. This setting prevents renewals from happening too often.
+        expiry-threshold: 30m # sets the expiry threshold. A lease is renewed the configured period of time before it expires.
+      reactive:
+        enabled: true
+      kv:
+        profiles: # disable profile looking
+        enabled: true
+        backend: 'ctrlplane'
+        profile-separator: '/'
+        default-context: # disable context paths
+        application-name: copilot # For secrets regarding startup configuration
+      authentication: APPROLE
+      uri: https://vault.ctrlplane.net
+      connection-timeout: 5000
+      read-timeout: 15000
+      app-role:
+          role-id: 5f7ccc33-a6bb-79ec-b017-520e454bfbed
+          secret-id: 7cc813af-9913-20a2-0dd2-afa034e29641
+          app-role-path: approle
+  config:
+    import: vault://
