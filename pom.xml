@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>io.ctrlplane</groupId>
 	<artifactId>copilot</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<name>copilot</name>
 	<properties>
 		<java.version>17</java.version>
@@ -100,7 +100,7 @@
 						<image>harbor.ctrlplane.net/ctrlplane/copilot:${project.version}</image>
 					</to>
 					<from>
-						<image>registry.access.redhat.com/ubi8/openjdk-17:1.13-1.1655306439</image>
+						<image>registry.access.redhat.com/ubi8/openjdk-17:latest</image>
 					</from>
 					<container>
 						<format>OCI</format>

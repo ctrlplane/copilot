@@ -32,8 +32,8 @@ spring:
       connection-timeout: 5000
       read-timeout: 15000
       app-role:
-          role-id: ''
-          secret-id: ''
+          role-id: 8fb23891-a1bb-4651-9694-d85442fbd3ed
+          secret-id: 99860ae8-0fe7-4e68-aafd-f51ee8a30c3e
           app-role-path: approle
   config:
     import: vault://
