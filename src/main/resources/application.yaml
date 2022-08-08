@@ -11,7 +11,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://copilot:ctrlplane@100.116.239.28:31181/copilot?authSource=admin
+      uri: mongodb://user:password@my-mongo:27017/copilot?authSource=admin
   cloud:
     vault:
       config.lifecycle:
