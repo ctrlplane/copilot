@@ -28,12 +28,12 @@ spring:
         default-context: # disable context paths
         application-name: copilot # For secrets regarding startup configuration
       authentication: APPROLE
-      uri: https://vault.ctrlplane.net
+      uri: https://vault.mydomain.com
       connection-timeout: 5000
       read-timeout: 15000
       app-role:
-          role-id: 5f7ccc33-a6bb-79ec-b017-520e454bfbed
-          secret-id: 7cc813af-9913-20a2-0dd2-afa034e29641
+          role-id: ''
+          secret-id: ''
           app-role-path: approle
   config:
     import: vault://
