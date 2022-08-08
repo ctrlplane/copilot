@@ -2,6 +2,7 @@
 Key broker service
 ## Status
 ![copilot CI](https://github.com/ctrlplane/copilot/actions/workflows/copilot-build.yaml/badge.svg)
+[![CodeQL](https://github.com/ctrlplane/copilot/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/ctrlplane/copilot/actions/workflows/codeql-analysis.yml)
 
 ## Running
 To run with podman:
