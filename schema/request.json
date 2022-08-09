@@ -27,7 +27,6 @@
         "kek_authorized": {
             "description": "whether or not this kek request was authorized",
             "type": "boolean"
-            }
         }
     },
     "required": [
