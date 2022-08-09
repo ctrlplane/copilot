@@ -1,0 +1,11 @@
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          reactive: DEBUG
+          client: DEBUG
+spring:
+  cloud:
+    vault:
+      enabled: false
