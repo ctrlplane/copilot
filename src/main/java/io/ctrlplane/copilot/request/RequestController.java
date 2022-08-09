@@ -5,11 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.SerializationUtils;
-import org.springframework.vault.core.ReactiveVaultTemplate;
 import org.springframework.vault.support.VaultResponseSupport;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.ctrlplane.copilot.key.IKeyServer;
 import io.ctrlplane.copilot.model.VaultKeyResponse;
 
 import java.util.Base64;
@@ -19,7 +20,7 @@ import java.util.Base64;
 public class RequestController {
 
     @Autowired
-    private ReactiveVaultTemplate reactiveVaultTemplate;
+    private IKeyServer reactiveVaultTemplate;
 
     /** The logger for this class. */
     private static final Logger LOG = LoggerFactory.getLogger(RequestController.class);
@@ -54,8 +55,7 @@ public class RequestController {
         try {
             final String path = new String(BASE64_DECODER.decode(kekId)).replace("\n", "");
             LOG.debug("Received request for kekID {}", path);
-            final VaultResponseSupport<VaultKeyResponse> vaultResponse = this.reactiveVaultTemplate
-                    .read(path, VaultKeyResponse.class).block();
+            final VaultResponseSupport<VaultKeyResponse> vaultResponse = this.reactiveVaultTemplate.read(path);
             if (vaultResponse != null) {
                 this.requestRepository.save(new RequestRecord(kekId));
                 VaultKeyResponse key = vaultResponse.getRequiredData();

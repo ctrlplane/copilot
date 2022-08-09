@@ -14,6 +14,7 @@ import org.springframework.vault.core.ReactiveVaultTemplate;
 import org.springframework.vault.support.VaultResponse;
 import org.springframework.vault.support.VaultResponseSupport;
 
+import io.ctrlplane.copilot.key.IKeyServer;
 import io.ctrlplane.copilot.model.VaultKeyResponse;
 
 import reactor.core.publisher.Mono;
@@ -38,7 +39,7 @@ class RequestControllerTest {
 
     /** Mock for vault bean. */
     @MockBean
-    private ReactiveVaultTemplate mockReactiveVaultTemplate;
+    private IKeyServer mockReactiveVaultTemplate;
 
     /** Mock for mongo repository. */
     @MockBean
@@ -64,8 +65,7 @@ class RequestControllerTest {
 
         when(mockVaultResponseSupport.getRequiredData()).thenReturn(mockVaultKeyResponse);
 
-        Mockito.when(this.mockReactiveVaultTemplate.read("test", VaultKeyResponse.class))
-                .thenReturn(Mono.just(mockVaultResponseSupport));
+        Mockito.when(this.mockReactiveVaultTemplate.read("test")).thenReturn(mockVaultResponseSupport);
         ResultActions result = this.mockMvc.perform(get("/api/v1/key/" + test)).andDo(print())
                 .andExpect(status().isOk());
 
@@ -83,8 +83,7 @@ class RequestControllerTest {
 
         when(mockVaultResponseSupport.getRequiredData()).thenReturn(mockVaultKeyResponse);
 
-        Mockito.when(this.mockReactiveVaultTemplate.read("test", VaultKeyResponse.class))
-                .thenReturn(Mono.empty());
+        Mockito.when(this.mockReactiveVaultTemplate.read("test")).thenReturn(null);
         this.mockMvc.perform(get("/api/v1/key/" + test)).andDo(print())
                 .andExpect(status().isNotFound());
     }
