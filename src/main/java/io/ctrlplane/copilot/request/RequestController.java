@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.ctrlplane.copilot.key.IKeyServer;
+import io.ctrlplane.copilot.key.KeyServer;
+import io.ctrlplane.copilot.model.Response;
 import io.ctrlplane.copilot.model.VaultKeyResponse;
 
 import java.util.Base64;
@@ -20,7 +21,7 @@ import java.util.Base64;
 public class RequestController {
 
     @Autowired
-    private IKeyServer reactiveVaultTemplate;
+    private KeyServer reactiveVaultTemplate;
 
     /** The logger for this class. */
     private static final Logger LOG = LoggerFactory.getLogger(RequestController.class);
@@ -55,10 +56,10 @@ public class RequestController {
         try {
             final String path = new String(BASE64_DECODER.decode(kekId)).replace("\n", "");
             LOG.debug("Received request for kekID {}", path);
-            final VaultResponseSupport<VaultKeyResponse> vaultResponse = this.reactiveVaultTemplate.read(path);
+            final VaultResponseSupport<Response> vaultResponse = this.reactiveVaultTemplate.read(path);
             if (vaultResponse != null) {
                 this.requestRepository.save(new RequestRecord(kekId));
-                VaultKeyResponse key = vaultResponse.getRequiredData();
+                VaultKeyResponse key = (VaultKeyResponse) vaultResponse.getRequiredData();
                 result = ResponseEntity.ok(SerializationUtils.serialize(key.getData()));
             }
         } catch (Exception e) {

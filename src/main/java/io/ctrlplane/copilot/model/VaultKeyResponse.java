@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 /** Represents response from vault. */
-public class VaultKeyResponse {
+public class VaultKeyResponse implements Response {
     /** The authentication information. */
     private String auth;
 

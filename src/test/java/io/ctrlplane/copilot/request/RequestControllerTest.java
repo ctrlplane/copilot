@@ -14,7 +14,7 @@ import org.springframework.vault.core.ReactiveVaultTemplate;
 import org.springframework.vault.support.VaultResponse;
 import org.springframework.vault.support.VaultResponseSupport;
 
-import io.ctrlplane.copilot.key.IKeyServer;
+import io.ctrlplane.copilot.key.KeyServer;
 import io.ctrlplane.copilot.model.VaultKeyResponse;
 
 import reactor.core.publisher.Mono;
@@ -39,7 +39,7 @@ class RequestControllerTest {
 
     /** Mock for vault bean. */
     @MockBean
-    private IKeyServer mockReactiveVaultTemplate;
+    private KeyServer mockReactiveVaultTemplate;
 
     /** Mock for mongo repository. */
     @MockBean

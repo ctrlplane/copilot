@@ -6,6 +6,8 @@ logging:
           reactive: DEBUG
           client: DEBUG
 spring:
+  file:
+    enabled: true
   cloud:
     vault:
       enabled: false

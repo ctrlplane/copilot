@@ -9,6 +9,8 @@ server:
   port: 8080
 
 spring:
+  file:
+    enabled: true
   data:
     mongodb:
       uri: mongodb://user:password@my-mongo:27017/copilot?authSource=admin

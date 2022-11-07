@@ -2,23 +2,27 @@ package io.ctrlplane.copilot.key;
 
 import java.util.Map;
 
-import org.springframework.context.annotation.Profile;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.vault.support.VaultResponseSupport;
+
+import io.ctrlplane.copilot.configuration.DevTemplate;
+import io.ctrlplane.copilot.model.FileKeyResponse;
 import io.ctrlplane.copilot.model.VaultKeyResponse;
 
-@Profile("dev")
 @Component
+@ConditionalOnProperty(
+    value="spring.file.enabled", 
+    havingValue = "true")
 /** Simulates a response from vault. */
-public class DevKeyServer implements IKeyServer {
+public class DevKeyServer implements KeyServer<FileKeyResponse> {
+
+    @Autowired
+    private DevTemplate devTemplate;
 
     @Override
-    public VaultResponseSupport<VaultKeyResponse> read(String path) {
-        final VaultResponseSupport<VaultKeyResponse> response = new VaultResponseSupport<>();
-        VaultKeyResponse vaultKeyResponse = new VaultKeyResponse();
-        vaultKeyResponse.setData(Map.of("testKey", "I am the key"));
-        response.setData(vaultKeyResponse);
-        return response;
+    public FileKeyResponse read(String path) {
+        return devTemplate.read();
     }
-    
 }

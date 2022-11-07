@@ -1,17 +1,19 @@
 package io.ctrlplane.copilot.key;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.vault.core.ReactiveVaultTemplate;
 import org.springframework.vault.support.VaultResponseSupport;
 
 import io.ctrlplane.copilot.model.VaultKeyResponse;
 
-@Profile("stage")
 @Component
+@ConditionalOnProperty(
+    value="spring.cloud.vault.enabled", 
+    havingValue = "true")
 /** The main vault server. */
-public class VaultServer implements IKeyServer {
+public class VaultServer implements KeyServer<VaultResponseSupport<VaultKeyResponse>> {
 
     @Autowired
     private ReactiveVaultTemplate reactiveVaultTemplate;
