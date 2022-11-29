@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.SerializationUtils;
 import org.springframework.vault.support.VaultResponseSupport;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.ctrlplane.copilot.key.IKeyServer;
 import io.ctrlplane.copilot.model.VaultKeyResponse;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /** A REST API for key requests. */
@@ -58,8 +58,9 @@ public class RequestController {
             final VaultResponseSupport<VaultKeyResponse> vaultResponse = this.reactiveVaultTemplate.read(path);
             if (vaultResponse != null) {
                 this.requestRepository.save(new RequestRecord(kekId));
-                VaultKeyResponse key = vaultResponse.getRequiredData();
-                result = ResponseEntity.ok(SerializationUtils.serialize(key.getData()));
+                final VaultKeyResponse key = vaultResponse.getRequiredData();
+                final byte[] keyContent = key.getData().get("key").getBytes(StandardCharsets.UTF_8);
+                result = ResponseEntity.ok(keyContent);
             }
         } catch (Exception e) {
             LOG.error("Something went wrong in getting key for path: {}\n{}", kekId, e.getLocalizedMessage());

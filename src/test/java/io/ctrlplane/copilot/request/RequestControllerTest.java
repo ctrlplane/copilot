@@ -10,14 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.vault.core.ReactiveVaultTemplate;
 import org.springframework.vault.support.VaultResponse;
 import org.springframework.vault.support.VaultResponseSupport;
 
 import io.ctrlplane.copilot.key.IKeyServer;
 import io.ctrlplane.copilot.model.VaultKeyResponse;
 
-import reactor.core.publisher.Mono;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -69,10 +67,7 @@ class RequestControllerTest {
         ResultActions result = this.mockMvc.perform(get("/api/v1/key/" + test)).andDo(print())
                 .andExpect(status().isOk());
 
-        Map<String, String> resultMap = SerializationUtils
-                .deserialize(result.andReturn().getResponse().getContentAsByteArray());
-
-        assertEquals("val", resultMap.get("key"));
+        assertEquals("val", result.andReturn().getResponse().getContentAsString());
     }
 
     /** Tests {@link RequestController#getKey(String)} */

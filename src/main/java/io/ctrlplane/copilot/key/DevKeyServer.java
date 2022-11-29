@@ -16,7 +16,7 @@ public class DevKeyServer implements IKeyServer {
     public VaultResponseSupport<VaultKeyResponse> read(String path) {
         final VaultResponseSupport<VaultKeyResponse> response = new VaultResponseSupport<>();
         VaultKeyResponse vaultKeyResponse = new VaultKeyResponse();
-        vaultKeyResponse.setData(Map.of("testKey", "I am the key"));
+        vaultKeyResponse.setData(Map.of("key", "thisisasupersecretkey"));
         response.setData(vaultKeyResponse);
         return response;
     }
