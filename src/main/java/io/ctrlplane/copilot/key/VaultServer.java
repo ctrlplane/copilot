@@ -8,20 +8,24 @@ import org.springframework.vault.support.VaultResponseSupport;
 
 import io.ctrlplane.copilot.model.VaultKeyResponse;
 
-@Component
-@ConditionalOnProperty(
-    value="spring.cloud.vault.enabled", 
-    havingValue = "true")
 /** The main vault server. */
+@Component
+@ConditionalOnProperty(value = "spring.cloud.vault.enabled", havingValue = "true")
 public class VaultServer implements KeyServer<VaultResponseSupport<VaultKeyResponse>> {
 
+    /** The template to communicate with vault. */
     @Autowired
     private ReactiveVaultTemplate reactiveVaultTemplate;
-    
+
+    /**
+     * Reads the response from vault.
+     * 
+     * @param path The path where the key is located.
+     */
     @Override
-    public VaultResponseSupport<VaultKeyResponse> read(String path) {
+    public VaultResponseSupport<VaultKeyResponse> getKmsResponse(String path) {
         return this.reactiveVaultTemplate
-        .read(path, VaultKeyResponse.class).block();
+                .read(path, VaultKeyResponse.class).block();
     }
-    
+
 }

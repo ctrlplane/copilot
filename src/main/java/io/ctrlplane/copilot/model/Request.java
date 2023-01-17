@@ -2,22 +2,27 @@ package io.ctrlplane.copilot.model;
 
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
+import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
 
+/** Represents a request for key. */
 @Data
 public class Request {
-    
-    @JsonAlias("kek_id")
+
+    /* The id of the kek. */
+    @SerializedName(value = "kek_id")
     private String kekId;
 
-    @JsonAlias("kms_provider")
+    /* The provider e.g. Vault, Azure, dev. */
+    @SerializedName(value = "kms_provider")
     private String provider;
 
-    @JsonAlias("kms_provider_path")
+    /* The path to the key. */
+    @SerializedName(value = "kms_provider_path")
     private String kmsProviderPath;
 
-    @JsonAlias("kms_additional_params")
+    /* Anything else needed to obtain the key. */
+    @SerializedName(value = "kms_additional_params")
     private Map<String, String> kmsAdditionalParams;
 }

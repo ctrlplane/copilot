@@ -8,7 +8,7 @@ logging:
 spring:
   file:
     enabled: true
-    path: "sample/kek.pem"
+    path: "sample/kek-test.pem"
   cloud:
     vault:
       enabled: false

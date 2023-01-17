@@ -3,21 +3,17 @@ package io.ctrlplane.copilot.request;
 import org.apache.commons.lang3.SerializationUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.vault.core.ReactiveVaultTemplate;
 import org.springframework.vault.support.VaultResponse;
 import org.springframework.vault.support.VaultResponseSupport;
 
-import io.ctrlplane.copilot.key.KeyServer;
+import io.ctrlplane.copilot.key.VaultServer;
 import io.ctrlplane.copilot.model.VaultKeyResponse;
-
-import reactor.core.publisher.Mono;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,7 +35,7 @@ class RequestControllerTest {
 
     /** Mock for vault bean. */
     @MockBean
-    private KeyServer mockReactiveVaultTemplate;
+    private VaultServer mockVaultServer;
 
     /** Mock for mongo repository. */
     @MockBean
@@ -59,13 +55,15 @@ class RequestControllerTest {
 
     /** Tests {@link RequestController#getKey(String)} */
     @Test
-    void testGetKek() throws Exception {
-        final String test = "dGVzdA==";
+    void testGetKekVault() throws Exception {
+        final String test = "ewogICJrZWtfaWQiOiAiYXNkZjEyMzQiLAogICJrbXNfcHJvdmlkZXIiOiAidmF1bHQiLAogICJrbXNfcHJvdmlkZXJfcGF0aCI6ICJjdHJscGxhbmUvYXNpYS1wYWNpZmljL2FwYWMtdG9reW8iLAogICJrbXNfYWRkaXRpb25hbF9wYXJhbXMiOiB7CiAgICAgICJzZWNyZXRfaWQiOiAidGVzdEtleTEiCiAgfQp9Cg==";
         when(mockVaultKeyResponse.getData()).thenReturn(Map.of("key", "val"));
 
         when(mockVaultResponseSupport.getRequiredData()).thenReturn(mockVaultKeyResponse);
 
-        Mockito.when(this.mockReactiveVaultTemplate.read("test")).thenReturn(mockVaultResponseSupport);
+        when(this.mockVaultServer.getKmsResponse("ctrlplane/asia-pacific/apac-tokyo"))
+                .thenReturn(mockVaultResponseSupport);
+
         ResultActions result = this.mockMvc.perform(get("/api/v1/key/" + test)).andDo(print())
                 .andExpect(status().isOk());
 
@@ -77,13 +75,29 @@ class RequestControllerTest {
 
     /** Tests {@link RequestController#getKey(String)} */
     @Test
+    void testGetKekDev() throws Exception {
+        final String test = "ewogICJrZWtfaWQiOiAiYXNkZjEyMzQiLAogICJrbXNfcHJvdmlkZXIiOiAiZGV2IiwKICAia21zX3Byb3ZpZGVyX3BhdGgiOiAiY3RybHBsYW5lL2FzaWEtcGFjaWZpYy9hcGFjLXRva3lvIiwKICAia21zX2FkZGl0aW9uYWxfcGFyYW1zIjogewogICAgICAic2VjcmV0X2lkIjogInRlc3RLZXkxIgogIH0KfQo=";
+
+        ResultActions result = this.mockMvc.perform(get("/api/v1/key/" + test)).andDo(print())
+                .andExpect(status().isOk());
+
+        Map<String, String> resultMap = SerializationUtils
+                .deserialize(result.andReturn().getResponse().getContentAsByteArray());
+
+        assertEquals("testkeycontent", resultMap.get("key"));
+    }
+
+    /** Tests {@link RequestController#getKey(String)} */
+    @Test
     void testGetKekNotFound() throws Exception {
-        final String test = "dGVzdA==";
+        final String test = "ewogICJrZWtfaWQiOiAiYXNkZjEyMzQiLAogICJrbXNfcHJvdmlkZXIiOiAidmF1bHQiLAogICJrbXNfcHJvdmlkZXJfcGF0aCI6ICJjdHJscGxhbmUvYXNpYS1wYWNpZmljL2FwYWMtdG9reW8iLAogICJrbXNfYWRkaXRpb25hbF9wYXJhbXMiOiB7CiAgICAgICJzZWNyZXRfaWQiOiAidGVzdEtleTEiCiAgfQp9Cg==";
+
         when(mockVaultKeyResponse.getData()).thenReturn(Map.of("key", "val"));
 
         when(mockVaultResponseSupport.getRequiredData()).thenReturn(mockVaultKeyResponse);
 
-        Mockito.when(this.mockReactiveVaultTemplate.read("test")).thenReturn(null);
+        when(this.mockVaultServer.getKmsResponse("test")).thenReturn(null);
+
         this.mockMvc.perform(get("/api/v1/key/" + test)).andDo(print())
                 .andExpect(status().isNotFound());
     }
