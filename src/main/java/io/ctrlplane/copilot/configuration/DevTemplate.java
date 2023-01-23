@@ -29,9 +29,9 @@ public class DevTemplate {
             final File resource = new ClassPathResource(path).getFile();
             final String content = new String(Files.readAllBytes(resource.toPath()));
             fileKeyResponse.setData(Map.of("key", content));
-            log.info("Set test content to {}", content);
+            log.info("Setting test content to [{}]", content);
         } catch (final IOException e) {
-            log.error("Error loading test key from path {}\n {}", path, e.getLocalizedMessage());
+            log.error("Error loading test key from path [{}]\n {}", path, e.getLocalizedMessage());
         }
         return fileKeyResponse;
     }

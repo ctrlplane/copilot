@@ -26,7 +26,7 @@ public class VaultServer implements KeyServer<VaultResponseSupport<VaultKeyRespo
      */
     @Override
     public VaultResponseSupport<VaultKeyResponse> getKmsResponse(String path) {
-        log.info("Initializing kms vault server.");
+        log.info("Retrieving kms response from vault server.");
         return this.reactiveVaultTemplate
                 .read(path, VaultKeyResponse.class).block();
     }

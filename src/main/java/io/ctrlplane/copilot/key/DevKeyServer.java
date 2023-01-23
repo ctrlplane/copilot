@@ -23,8 +23,8 @@ public class DevKeyServer implements KeyServer<FileKeyResponse> {
      * @param path The path to the key.
      */
     @Override
-    public FileKeyResponse getKmsResponse(String path) {
-        log.info("Initializing kms dev server.");
+    public FileKeyResponse getKmsResponse(final String path) {
+        log.info("Retrieving kms response from dev server.");
         return devTemplate.read();
     }
 
