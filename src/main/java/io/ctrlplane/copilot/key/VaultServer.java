@@ -7,9 +7,11 @@ import org.springframework.vault.core.ReactiveVaultTemplate;
 import org.springframework.vault.support.VaultResponseSupport;
 
 import io.ctrlplane.copilot.model.VaultKeyResponse;
+import lombok.extern.slf4j.Slf4j;
 
 /** The main vault server. */
 @Component
+@Slf4j
 @ConditionalOnProperty(value = "spring.cloud.vault.enabled", havingValue = "true")
 public class VaultServer implements KeyServer<VaultResponseSupport<VaultKeyResponse>> {
 
@@ -24,6 +26,7 @@ public class VaultServer implements KeyServer<VaultResponseSupport<VaultKeyRespo
      */
     @Override
     public VaultResponseSupport<VaultKeyResponse> getKmsResponse(String path) {
+        log.info("Initializing kms vault server.");
         return this.reactiveVaultTemplate
                 .read(path, VaultKeyResponse.class).block();
     }

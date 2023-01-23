@@ -11,24 +11,27 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import io.ctrlplane.copilot.model.FileKeyResponse;
+import lombok.extern.slf4j.Slf4j;
 
 /** The template for handling file responses. */
 @Component
+@Slf4j
 @ConditionalOnProperty(value = "spring.file.enabled", havingValue = "true")
 public class DevTemplate {
 
     @Value("${spring.file.path}")
-    String path;
+    private String path;
 
     /** Reads a file and returns the {@link FileKeyResponse}. */
     public FileKeyResponse read() {
         final FileKeyResponse fileKeyResponse = new FileKeyResponse();
         try {
-            File resource = new ClassPathResource(path).getFile();
-            String content = new String(Files.readAllBytes(resource.toPath()));
+            final File resource = new ClassPathResource(path).getFile();
+            final String content = new String(Files.readAllBytes(resource.toPath()));
             fileKeyResponse.setData(Map.of("key", content));
+            log.info("Set test content to {}", content);
         } catch (final IOException e) {
-            e.printStackTrace();
+            log.error("Error loading test key from path {}\n {}", path, e.getLocalizedMessage());
         }
         return fileKeyResponse;
     }
