@@ -9,6 +9,10 @@ server:
   port: 8080
 
 spring:
+  file:
+    enabled: true
+    file:
+      path: /path/to/kek_file
   data:
     mongodb:
       uri: mongodb://user:password@my-mongo:27017/copilot?authSource=admin

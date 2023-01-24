@@ -6,11 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/** Represents response from vault. */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-/** Represents response from vault. */
-public class VaultKeyResponse {
+public class VaultKeyResponse implements Response {
     /** The authentication information. */
     private String auth;
 
@@ -34,7 +34,7 @@ public class VaultKeyResponse {
 
     /** Any warnings encountered in request. */
     private Object warnings;
-    
+
     /** The wrapped key info. */
     private Object wrapInfo;
 }
